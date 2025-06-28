@@ -1,3 +1,4 @@
+console.log("Script is running!");
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('generate').addEventListener('click', () => {
     fetch('https://www.themealdb.com/api/json/v1/1/random.php')
