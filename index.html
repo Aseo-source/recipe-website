@@ -1,21 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="UTF-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Random Meal Generator</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <title>Random Recipe Picks</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
-  <img src="logo.png" alt="Site Logo" width="120" />
-  <h1>Random Recipe Generator</h1>
-  <button id="generate">Get Random Recipe</button>
+  <div class="wrapper">
 
-  <div id="meal-container">
-    <!-- This is where the meal will appear -->
+    <header>
+      <img src="logo.png" alt="Site Logo" class="logo" />
+      <h1>Today’s Recipe Picks</h1>
+      <button id="dark-toggle">🌙 Toggle Dark Mode</button>
+    </header>
+
+    <!-- 👤 Profile Preferences -->
+    <section id="profile-section">
+      <h2>Your Preferences</h2>
+      <label><input type="checkbox" id="vegetarian-pref" /> Vegetarian only</label>
+      <label><input type="checkbox" id="vegan-pref" /> Vegan only</label><br />
+      <label for="dislikes">Avoid ingredient(s):</label>
+      <input type="text" id="dislikes" placeholder="e.g. mushrooms, peanuts" /><br />
+      <label for="preferred-area">Preferred Cuisine:</label>
+      <select id="preferred-area"><option value="">Any</option></select><br />
+      <button id="save-profile">Save Preferences</button>
+    </section>
+
+    <!-- 🔍 Search -->
+    <section id="search-section">
+      <input type="text" id="search-input" placeholder="Search for a recipe..." />
+      <button id="search-btn">Search</button>
+    </section>
+
+    <!-- 🎛️ Filter -->
+    <section id="filter-section">
+      <select id="category-filter"><option value="">All Categories</option></select>
+      <select id="area-filter"><option value="">All Areas</option></select>
+      <button id="apply-filters">Apply Filters</button>
+    </section>
+
+    <button id="refresh-btn">Get New Recipes</button>
+
+    <main>
+      <div id="loading" class="hidden">🍳 Loading recipes...</div>
+      
+      <div id="meal-container"></div>
+    </main>
+
+    <!-- ❤️ Favorites -->
+    <section id="favorites-section">
+      <h2>❤️ Your Favorites</h2>
+      <div id="favorites-container"></div>
+    </section>
+
+    <!-- 🍽️ Modal -->
+    <div id="modal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+
   </div>
 
-  <script src="./script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
