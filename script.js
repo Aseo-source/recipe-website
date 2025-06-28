@@ -1,9 +1,8 @@
-document.addEventListener("DOMContentLoaded", () => {
+function loadRandomMeals() {
   const container = document.getElementById("meal-container");
   container.innerHTML = "";
 
-  const numRecipes = 6; // Number of meals to show
-
+  const numRecipes = 6;
   for (let i = 0; i < numRecipes; i++) {
     fetch("https://www.themealdb.com/api/json/v1/1/random.php")
       .then(res => res.json())
@@ -20,8 +19,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         container.appendChild(card);
       })
-      .catch(error => {
-        console.error("Error fetching meal:", error);
-      });
+      .catch(err => console.error("Error fetching meal:", err));
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadRandomMeals();
+
+  const refreshBtn = document.getElementById("refresh-btn");
+  if (refreshBtn) {
+    refreshBtn.addEventListener("click", () => {
+      loadRandomMeals();
+    });
   }
 });
