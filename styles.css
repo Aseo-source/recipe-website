@@ -236,4 +236,19 @@ header {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.intro-content {
+  text-align: center;
+  font-size: 2rem;
+  animation: fadeIn 2s ease-out;
+}
 
+.intro-logo {
+  height: 120px; /* adjust size as needed */
+  margin-bottom: 1rem;
+  animation: logoPop 1.2s ease-out;
+}
+
+@keyframes logoPop {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
