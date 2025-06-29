@@ -195,5 +195,14 @@ label {
   flex-wrap: wrap;
   gap: 1rem;
 }
-
+.site-logo {
+  height: 50px;
+  margin-right: 1rem;
+  vertical-align: middle;
+}
+header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
