@@ -255,10 +255,15 @@ function renderFavorites() {
   });
 }
 document.addEventListener("DOMContentLoaded", function () {
+
   loadDarkMode();
   loadFilters();
   loadRandomMeals();
   renderFavorites();
+
+  document.getElementById("intro-screen").addEventListener("click", function () {
+    this.classList.add("fade-out");
+  });
 
   document.getElementById("refresh-btn").addEventListener("click", loadRandomMeals);
 
