@@ -35,28 +35,40 @@ function loadRandomMeals() {
   let count = 0;
   let attempts = 0;
   const target = 6;
+  const maxAttempts = target * 6;
+  const collected = [];
 
   function tryLoad() {
     fetch("https://www.themealdb.com/api/json/v1/1/random.php")
       .then(res => res.json())
       .then(data => {
-        const meal = data.meals?.[0];
         attempts++;
+        const meal = data.meals?.[0];
 
         if (meal && passesProfileFilter(meal)) {
-          renderMealCard(meal, container);
+          collected.push(meal);
           count++;
         }
 
-        if (count < target && attempts < target * 4) {
+        if (count < target && attempts < maxAttempts) {
           tryLoad();
         } else {
+          if (collected.length === 0) {
+            container.innerHTML = `<p style="text-align:center;">😕 No meals matched your current filters. Try clearing filters or updating your profile.</p>`;
+          } else {
+            collected.forEach(meal => renderMealCard(meal, container));
+          }
           loading.classList.add("hidden");
         }
       })
       .catch(() => {
         attempts++;
-        if (attempts >= target * 4) loading.classList.add("hidden");
+        if (attempts >= maxAttempts) {
+          loading.classList.add("hidden");
+          container.innerHTML = `<p style="text-align:center;">⚠️ Failed to fetch meals. Please check your connection.</p>`;
+        } else {
+          tryLoad();
+        }
       });
   }
 
@@ -106,7 +118,7 @@ function saveProfile() {
       .toLowerCase()
       .split(",")
       .map(s => s.trim())
-      .filter(s => s),
+      .filter(Boolean),
     preferredArea: document.getElementById("preferred-area").value
   };
   localStorage.setItem("userProfile", JSON.stringify(profile));
@@ -186,18 +198,18 @@ function renderFavorites() {
   favs.forEach(meal => renderMealCard(meal, container));
 }
 
-document.getElementById("dark-toggle").addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  localStorage.setItem("darkMode", document.body.classList.contains("dark"));
-});
-
 function loadDarkMode() {
   if (localStorage.getItem("darkMode") === "true") {
     document.body.classList.add("dark");
   }
 }
 
-// 🧠 Initialization
+document.getElementById("dark-toggle").addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+});
+
+// 🧠 DOM ready
 document.addEventListener("DOMContentLoaded", () => {
   loadDarkMode();
   loadFilters();
