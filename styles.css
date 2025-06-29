@@ -196,15 +196,13 @@ label {
   gap: 1rem;
 }
 .site-logo {
- .site-logo {
-  height: 80px;
-  width: auto;
-}
+height: 40px;
+  margin-right: 1rem;
+  vertical-align: middle;
 }
 header {
-  display: flex;
+  gap: 0.5rem;
   align-items: center;
-  gap: 1rem;
 }
 #intro-screen {
   position: fixed;
