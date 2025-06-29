@@ -252,3 +252,156 @@ header {
   from { opacity: 0; transform: scale(0.8); }
   to { opacity: 1; transform: scale(1); }
 }
+.meal-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 10px;
+  text-align: center;
+  background-color: var(--card-bg, #fff);
+  transition: transform 0.2s ease;
+}
+.meal-card:hover {
+  transform: scale(1.02);
+}
+.meal-card img {
+  width: 100%;
+  max-width: 250px;
+  border-radius: 6px;
+}
+
+.meal-card p {
+  margin: 6px 0;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.favorite-btn {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+/* Optional badge styling for complexity & allergens */
+.meal-card strong {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Dark mode override */
+body.dark {
+  --card-bg: #222;
+  background-color: #121212;
+  color: #eee;
+}
+
+body.dark .meal-card {
+  border-color: #444;
+}
+body.dark .meal-card p {
+  color: #ccc;
+}
+.meal-card {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 14px;
+  margin: 14px;
+  text-align: center;
+  background-color: var(--card-bg, #fff);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  max-width: 300px;
+}
+
+.meal-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.meal-card img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.meal-card h3 {
+  margin: 8px 0;
+  font-size: 1.2rem;
+}
+
+.meal-card p {
+  margin: 6px 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* Badge styles */
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: #eee;
+  color: #333;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin: 2px 4px;
+}
+
+.badge.danger {
+  background-color: #fdd;
+  color: #b00;
+}
+
+.badge.info {
+  background-color: #def;
+  color: #036;
+}
+
+.badge.success {
+  background-color: #dfd;
+  color: #060;
+}
+
+/* Favorite button */
+.favorite-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 1.4rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Responsive card container */
+#meal-container, #favorites-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Dark mode adjustments */
+body.dark {
+  --card-bg: #1e1e1e;
+  background-color: #121212;
+  color: #eee;
+}
+
+body.dark .meal-card {
+  border-color: #444;
+}
+
+body.dark .meal-card p {
+  color: #ccc;
+}
+
+body.dark .badge {
+  background-color: #333;
+  color: #ddd;
+}
