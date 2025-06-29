@@ -27,7 +27,7 @@ function loadFilters() {
     });
 }
 
-// Load meals based on profile filters
+// Load meals
 function loadRandomMeals() {
   const container = document.getElementById("meal-container");
   const loading = document.getElementById("loading");
@@ -65,7 +65,7 @@ function loadRandomMeals() {
   tryLoad();
 }
 
-// Render meal card
+// Render a meal card
 function renderMealCard(meal, container) {
   const card = document.createElement("div");
   card.className = "meal-card";
@@ -87,7 +87,7 @@ function renderMealCard(meal, container) {
   container.appendChild(card);
 }
 
-// Profile filtering
+// Profile preferences filter
 function passesProfileFilter(meal) {
   const profile = JSON.parse(localStorage.getItem("userProfile")) || {};
   const ingredients = Object.keys(meal)
@@ -135,7 +135,7 @@ function searchMeals(query) {
     });
 }
 
-// Filter meals
+// Apply category/area filters
 function applyFilters() {
   const category = document.getElementById("category-filter").value;
   const area = document.getElementById("area-filter").value;
@@ -194,11 +194,12 @@ function showModal(meal) {
   modal.classList.remove("hidden");
 }
 
+// Close modal
 document.querySelector(".close").addEventListener("click", () => {
   document.getElementById("modal").classList.add("hidden");
 });
 
-// Favorite toggle
+// Toggle favorite
 function toggleFavorite(meal) {
   const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
   const exists = favs.find(m => m.idMeal === meal.idMeal);
@@ -232,7 +233,7 @@ function loadDarkMode() {
   }
 }
 
-// Startup
+// Initialization
 document.addEventListener("DOMContentLoaded", () => {
   loadDarkMode();
   loadFilters();
@@ -253,3 +254,5 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("apply-filters").addEventListener("click", applyFilters);
   document.getElementById("save-profile").addEventListener("click", saveProfile);
 });
+
+
