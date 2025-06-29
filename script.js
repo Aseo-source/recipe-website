@@ -18,7 +18,7 @@ darkToggle.addEventListener("click", () => {
   updateToggleLabel();
 });
 
-// === Load Filter Options ===
+// === Load Filter & Profile Options from TheMealDB ===
 function loadFilters() {
   fetch("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
     .then(res => res.json())
@@ -30,6 +30,10 @@ function loadFilters() {
         opt.textContent = c.strCategory;
         cat.appendChild(opt);
       });
+
+      // Update vegetarian filter availability
+      const vegetarianExists = data.meals.some(c => c.strCategory === "Vegetarian");
+      document.getElementById("vegetarian-pref").disabled = !vegetarianExists;
     });
 
   fetch("https://www.themealdb.com/api/json/v1/1/list.php?a=list")
@@ -46,8 +50,7 @@ function loadFilters() {
       });
     });
 }
-
-// === Profile Filter Logic ===
+// === Profile Filter Logic (aligned with TheMealDB) ===
 function passesProfileFilter(meal) {
   const profile = JSON.parse(localStorage.getItem("userProfile") || "{}");
   const ingredients = Object.keys(meal)
@@ -55,17 +58,24 @@ function passesProfileFilter(meal) {
     .map(k => meal[k].toLowerCase());
 
   if (profile.vegetarian && meal.strCategory !== "Vegetarian") return false;
-  if (profile.vegan && meal.strCategory !== "Vegan") return false;
+
+  // TheMealDB does not provide a "Vegan" category — log this but allow fallback behavior
+  if (profile.vegan) {
+    console.warn("⚠️ Vegan filter selected — TheMealDB does not have a vegan category. Some results may not be strictly vegan.");
+  }
+
   if (profile.preferredArea && meal.strArea !== profile.preferredArea) return false;
-  if (profile.dislikes?.some(d => ingredients.includes(d))) return false;
+
+  if (profile.dislikes?.some(dislike => ingredients.includes(dislike))) return false;
 
   return true;
 }
 
+// === Save Profile Preferences ===
 function saveProfile() {
   const profile = {
     vegetarian: document.getElementById("vegetarian-pref").checked,
-    vegan: document.getElementById("vegan-pref").checked,
+    vegan: document.getElementById("vegan-pref").checked,  // preserved, though not strictly applied
     dislikes: document.getElementById("dislikes").value
       .toLowerCase()
       .split(",")
@@ -190,7 +200,6 @@ function applyFilters() {
       });
     });
 }
-
 // === Favorites ===
 function toggleFavorite(meal) {
   const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
