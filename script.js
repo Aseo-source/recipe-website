@@ -1,4 +1,9 @@
-// Load filter dropdowns (categories and areas)
+function loadDarkMode() {
+  if (localStorage.getItem("darkMode") === "true") {
+    document.body.classList.add("dark");
+  }
+}
+
 function loadFilters() {
   fetch("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
     .then(res => res.json())
@@ -27,7 +32,6 @@ function loadFilters() {
     });
 }
 
-// Load random meals with profile filter and fallback
 function loadRandomMeals() {
   const container = document.getElementById("meal-container");
   const loading = document.getElementById("loading");
@@ -64,7 +68,7 @@ function loadRandomMeals() {
         attempts++;
         if (attempts >= maxAttempts) {
           loading.classList.add("hidden");
-          container.innerHTML = `<p style="text-align:center;">⚠️ Network error. Try refreshing.</p>`;
+          container.innerHTML = `<p style="text-align:center;">⚠️ Failed to load meals.</p>`;
         } else {
           tryLoad();
         }
@@ -74,7 +78,6 @@ function loadRandomMeals() {
   tryLoad();
 }
 
-// Fallback to unfiltered random meals
 function fetchFallbackMeals() {
   const container = document.getElementById("meal-container");
   const loading = document.getElementById("loading");
@@ -102,7 +105,6 @@ function fetchFallbackMeals() {
   fetchOne();
 }
 
-// Render a meal card with favorite toggle and click-through
 function renderMealCard(meal, container) {
   const card = document.createElement("div");
   card.className = "meal-card";
@@ -124,7 +126,6 @@ function renderMealCard(meal, container) {
   container.appendChild(card);
 }
 
-// Match recipe against profile preferences
 function passesProfileFilter(meal) {
   const profile = JSON.parse(localStorage.getItem("userProfile")) || {};
   const ingredients = Object.keys(meal)
@@ -139,7 +140,6 @@ function passesProfileFilter(meal) {
   return true;
 }
 
-// Save user preferences to localStorage
 function saveProfile() {
   const profile = {
     vegetarian: document.getElementById("vegetarian-pref").checked,
@@ -155,7 +155,6 @@ function saveProfile() {
   loadRandomMeals();
 }
 
-// Search meals by query
 function searchMeals(query) {
   const container = document.getElementById("meal-container");
   const loading = document.getElementById("loading");
@@ -176,7 +175,6 @@ function searchMeals(query) {
     });
 }
 
-// Filter by dropdown category or area
 function applyFilters() {
   const category = document.getElementById("category-filter").value;
   const area = document.getElementById("area-filter").value;
@@ -210,7 +208,6 @@ function applyFilters() {
     });
 }
 
-// Favorites toggle
 function toggleFavorite(meal) {
   const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
   const exists = favs.find(m => m.idMeal === meal.idMeal);
@@ -224,7 +221,6 @@ function toggleFavorite(meal) {
   renderFavorites();
 }
 
-// Load favorites into UI
 function renderFavorites() {
   const container = document.getElementById("favorites-container");
   container.innerHTML = "";
@@ -232,19 +228,11 @@ function renderFavorites() {
   favs.forEach(meal => renderMealCard(meal, container));
 }
 
-// Dark mode setup
-function loadDarkMode() {
-  if (localStorage.getItem("darkMode") === "true") {
-    document.body.classList.add("dark");
-  }
-}
-
 document.getElementById("dark-toggle").addEventListener("click", () => {
   document.body.classList.toggle("dark");
   localStorage.setItem("darkMode", document.body.classList.contains("dark"));
 });
 
-// DOM ready
 document.addEventListener("DOMContentLoaded", () => {
   loadDarkMode();
   loadFilters();
@@ -256,7 +244,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const q = document.getElementById("search-input").value.trim();
     if (q) searchMeals(q);
   });
-  document.getElementById("search-input").addEvent
-
+  document.getElementById("search-input").addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      const q = e.target.value.trim();
+      if (q) searchMeals(q);
+    }
+  });
+  document.getElementById("apply-filters").addEvent
 
 
