@@ -12,7 +12,6 @@ body.dark {
   --accent: #ff9800;
 }
 
-/* Base & Layout */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -33,7 +32,6 @@ body {
   padding: 2rem;
 }
 
-/* Header */
 header {
   text-align: center;
   margin-bottom: 2rem;
@@ -65,7 +63,6 @@ button:hover {
   opacity: 0.9;
 }
 
-/* Sections */
 #search-section,
 #filter-section,
 #profile-section,
@@ -94,7 +91,6 @@ label {
   font-size: 0.95rem;
 }
 
-/* Recipe Grids */
 #meal-container,
 #favorites-container {
   display: grid;
@@ -103,7 +99,6 @@ label {
   padding: 0 1rem;
 }
 
-/* Meal Cards */
 .meal-card {
   background: var(--card);
   color: var(--text);
@@ -130,7 +125,6 @@ label {
   font-size: 1.1rem;
 }
 
-/* Favorite Button */
 .favorite-btn {
   position: absolute;
   top: 10px;
@@ -141,7 +135,6 @@ label {
   border: none;
 }
 
-/* Modal Styles */
 .modal {
   display: none;
   position: fixed;
@@ -172,16 +165,6 @@ label {
   cursor: pointer;
 }
 
-.hidden {
-  display: none;
-}
-
-/* Responsive Tweaks */
-@media (max-width: 600px) {
-  input, select {
-    width: 90%;
-  }
-}
 #loading {
   text-align: center;
   font-size: 1.2rem;
@@ -196,4 +179,10 @@ label {
 
 .hidden {
   display: none;
+}
+
+@media (max-width: 600px) {
+  input, select {
+    width: 90%;
+  }
 }

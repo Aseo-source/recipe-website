@@ -1,4 +1,4 @@
-// Load filters from API
+// Load filter options
 function loadFilters() {
   fetch("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
     .then(res => res.json())
@@ -27,7 +27,7 @@ function loadFilters() {
     });
 }
 
-// Load 6 meals that match profile preferences
+// Load meals based on profile filters
 function loadRandomMeals() {
   const container = document.getElementById("meal-container");
   const loading = document.getElementById("loading");
@@ -65,7 +65,7 @@ function loadRandomMeals() {
   tryLoad();
 }
 
-// Render a meal card
+// Render meal card
 function renderMealCard(meal, container) {
   const card = document.createElement("div");
   card.className = "meal-card";
@@ -87,7 +87,7 @@ function renderMealCard(meal, container) {
   container.appendChild(card);
 }
 
-// Filter meals by user profile
+// Profile filtering
 function passesProfileFilter(meal) {
   const profile = JSON.parse(localStorage.getItem("userProfile")) || {};
   const ingredients = Object.keys(meal)
@@ -102,7 +102,7 @@ function passesProfileFilter(meal) {
   return true;
 }
 
-// Save user preferences
+// Save user profile
 function saveProfile() {
   const profile = {
     vegetarian: document.getElementById("vegetarian-pref").checked,
@@ -135,7 +135,7 @@ function searchMeals(query) {
     });
 }
 
-// Filter meals by category/area
+// Filter meals
 function applyFilters() {
   const category = document.getElementById("category-filter").value;
   const area = document.getElementById("area-filter").value;
@@ -169,7 +169,7 @@ function applyFilters() {
     });
 }
 
-// Modal popup
+// Show recipe modal
 function showModal(meal) {
   const modal = document.getElementById("modal");
   const body = document.getElementById("modal-body");
@@ -198,7 +198,7 @@ document.querySelector(".close").addEventListener("click", () => {
   document.getElementById("modal").classList.add("hidden");
 });
 
-// Toggle favorite
+// Favorite toggle
 function toggleFavorite(meal) {
   const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
   const exists = favs.find(m => m.idMeal === meal.idMeal);
@@ -212,7 +212,7 @@ function toggleFavorite(meal) {
   renderFavorites();
 }
 
-// Show favorites
+// Render favorites
 function renderFavorites() {
   const container = document.getElementById("favorites-container");
   container.innerHTML = "";
@@ -232,7 +232,7 @@ function loadDarkMode() {
   }
 }
 
-// Start everything
+// Startup
 document.addEventListener("DOMContentLoaded", () => {
   loadDarkMode();
   loadFilters();
@@ -245,3 +245,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (q) searchMeals(q);
   });
   document.getElementById("search-input").addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      const q = e.target.value.trim();
+      if (q) searchMeals(q);
+    }
+  });
+  document.getElementById("apply-filters").addEventListener("click", applyFilters);
+  document.getElementById("save-profile").addEventListener("click", saveProfile);
+});
