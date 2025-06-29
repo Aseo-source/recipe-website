@@ -53,19 +53,19 @@ function loadRandomMeals() {
         if (count < target && attempts < maxAttempts) {
           tryLoad();
         } else {
+          loading.classList.add("hidden");
           if (collected.length === 0) {
-            container.innerHTML = `<p style="text-align:center;">😕 No meals matched your current filters. Try clearing filters or updating your profile.</p>`;
+            container.innerHTML = `<p style="text-align:center;">😕 No recipes matched your preferences. Try clearing filters or updating your profile.</p>`;
           } else {
             collected.forEach(meal => renderMealCard(meal, container));
           }
-          loading.classList.add("hidden");
         }
       })
       .catch(() => {
         attempts++;
         if (attempts >= maxAttempts) {
           loading.classList.add("hidden");
-          container.innerHTML = `<p style="text-align:center;">⚠️ Failed to fetch meals. Please check your connection.</p>`;
+          container.innerHTML = `<p style="text-align:center;">⚠️ Failed to fetch meals. Please check your internet connection.</p>`;
         } else {
           tryLoad();
         }
@@ -209,7 +209,6 @@ document.getElementById("dark-toggle").addEventListener("click", () => {
   localStorage.setItem("darkMode", document.body.classList.contains("dark"));
 });
 
-// 🧠 DOM ready
 document.addEventListener("DOMContentLoaded", () => {
   loadDarkMode();
   loadFilters();

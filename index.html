@@ -2,34 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Random Recipe Picks</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
 </head>
 <body>
   <div class="wrapper">
 
     <header>
-      <img src="logo.png" alt="Site Logo" class="logo" />
       <h1>Today’s Recipe Picks</h1>
       <button id="dark-toggle">🌙 Toggle Dark Mode</button>
     </header>
 
     <section id="profile-section">
-      <h2>Your Preferences</h2>
-      <label><input type="checkbox" id="vegetarian-pref" /> Vegetarian only</label>
-      <label><input type="checkbox" id="vegan-pref" /> Vegan only</label><br />
-      <label for="dislikes">Avoid ingredient(s):</label>
-      <input type="text" id="dislikes" placeholder="e.g. mushrooms, peanuts" /><br />
-      <label for="preferred-area">Preferred Cuisine:</label>
-      <select id="preferred-area"><option value="">Any</option></select><br />
+      <label><input type="checkbox" id="vegetarian-pref" /> Vegetarian</label>
+      <label><input type="checkbox" id="vegan-pref" /> Vegan</label>
+      <input type="text" id="dislikes" placeholder="Dislikes" />
+      <select id="preferred-area"><option value="">Any Area</option></select>
       <button id="save-profile">Save Preferences</button>
     </section>
 
     <section id="search-section">
-      <input type="text" id="search-input" placeholder="Search for a recipe..." />
+      <input type="text" id="search-input" placeholder="Search a recipe..." />
       <button id="search-btn">Search</button>
     </section>
 
@@ -43,12 +36,12 @@
     <button id="refresh-btn">Get New Recipes</button>
 
     <main>
-      <div id="loading" class="hidden">🍳 Loading recipes...</div>
+      <div id="loading" class="hidden">🍳 Loading...</div>
       <div id="meal-container"></div>
     </main>
 
     <section id="favorites-section">
-      <h2>❤️ Your Favorites</h2>
+      <h2>Your Favorites</h2>
       <div id="favorites-container"></div>
     </section>
 
