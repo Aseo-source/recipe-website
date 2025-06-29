@@ -1,8 +1,23 @@
+var darkToggle = document.getElementById("dark-toggle");
+
+function updateToggleLabel() {
+  var isDark = document.body.classList.contains("dark");
+  darkToggle.textContent = isDark ? "☀️ Change to Light Mode" : "🌙 Change to Dark Mode";
+}
+
 function loadDarkMode() {
-  if (localStorage.getItem("darkMode") === "true") {
+  var isDark = localStorage.getItem("darkMode") === "true";
+  if (isDark) {
     document.body.classList.add("dark");
   }
+  updateToggleLabel();
 }
+
+darkToggle.addEventListener("click", function () {
+  var isNowDark = document.body.classList.toggle("dark");
+  localStorage.setItem("darkMode", isNowDark);
+  updateToggleLabel();
+});
 
 function loadFilters() {
   fetch("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
@@ -239,11 +254,6 @@ function renderFavorites() {
     renderMealCard(meal, container);
   });
 }
-document.getElementById("dark-toggle").addEventListener("click", function () {
-  document.body.classList.toggle("dark");
-  localStorage.setItem("darkMode", document.body.classList.contains("dark"));
-});
-
 document.addEventListener("DOMContentLoaded", function () {
   loadDarkMode();
   loadFilters();

@@ -2,53 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Random Recipe Picks</title>
+  <title>What's Cooking?</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="wrapper">
+  <header>
+    <h1>What's Cooking?</h1>
+    <button id="dark-toggle">🌙 Change to Dark Mode</button>
+  </header>
 
-    <header>
-      <h1>Today’s Recipe Picks</h1>
-      <button id="dark-toggle">🌙 Toggle Dark Mode</button>
-    </header>
+  <section id="profile-section">
+    <h2>Your Preferences</h2>
+    <label><input type="checkbox" id="vegetarian-pref" /> Vegetarian</label>
+    <label><input type="checkbox" id="vegan-pref" /> Vegan</label>
+    <input type="text" id="dislikes" placeholder="Dislikes (comma-separated)" />
+    <select id="preferred-area">
+      <option value="">Any Area</option>
+    </select>
+    <button id="save-profile">Save Profile</button>
+  </section>
 
-    <section id="profile-section">
-      <label><input type="checkbox" id="vegetarian-pref" /> Vegetarian</label>
-      <label><input type="checkbox" id="vegan-pref" /> Vegan</label>
-      <input type="text" id="dislikes" placeholder="Dislikes" />
-      <select id="preferred-area"><option value="">Any Area</option></select>
-      <button id="save-profile">Save Preferences</button>
-    </section>
+  <section id="search-section">
+    <input type="text" id="search-input" placeholder="Search recipes..." />
+    <button id="search-btn">Search</button>
+  </section>
 
-    <section id="search-section">
-      <input type="text" id="search-input" placeholder="Search a recipe..." />
-      <button id="search-btn">Search</button>
-    </section>
+  <section id="filter-section">
+    <select id="category-filter">
+      <option value="">All Categories</option>
+    </select>
+    <select id="area-filter">
+      <option value="">All Areas</option>
+    </select>
+    <button id="apply-filters">Apply Filters</button>
+    <button id="clear-filters">Clear Filters</button>
+  </section>
 
-    <section id="filter-section">
-      <select id="category-filter"><option value="">All Categories</option></select>
-      <select id="area-filter"><option value="">All Areas</option></select>
-      <button id="apply-filters">Apply Filters</button>
-      <button id="clear-filters">Clear Filters</button>
-    </section>
+  <button id="refresh-btn">🔁 Get New Recipes</button>
 
-    <button id="refresh-btn">Get New Recipes</button>
+  <main>
+    <div id="loading" class="hidden">🍳 Cooking up ideas...</div>
+    <div id="meal-container"></div>
+  </main>
 
-    <main>
-      <div id="loading" class="hidden">🍳 Loading...</div>
-      <div id="meal-container"></div>
-    </main>
-
-    <section id="favorites-section">
-      <h2>Your Favorites</h2>
-      <div id="favorites-container"></div>
-    </section>
-
-  </div>
+  <section id="favorites-section">
+    <h2>Favorites</h2>
+    <div id="favorites-container"></div>
+  </section>
 
   <script src="script.js"></script>
 </body>
 </html>
+
 
 
