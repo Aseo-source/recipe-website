@@ -6,10 +6,10 @@ function loadDarkMode() {
 
 function loadFilters() {
   fetch("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
       var cat = document.getElementById("category-filter");
-      data.meals.forEach(function(c) {
+      data.meals.forEach(function (c) {
         var opt = document.createElement("option");
         opt.value = c.strCategory;
         opt.textContent = c.strCategory;
@@ -18,11 +18,11 @@ function loadFilters() {
     });
 
   fetch("https://www.themealdb.com/api/json/v1/1/list.php?a=list")
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
       var area = document.getElementById("area-filter");
       var pref = document.getElementById("preferred-area");
-      data.meals.forEach(function(a) {
+      data.meals.forEach(function (a) {
         var opt = document.createElement("option");
         opt.value = a.strArea;
         opt.textContent = a.strArea;
@@ -46,8 +46,8 @@ function loadRandomMeals() {
 
   function tryLoad() {
     fetch("https://www.themealdb.com/api/json/v1/1/random.php")
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
         attempts++;
         var meal = data.meals && data.meals[0];
         if (meal && passesProfileFilter(meal)) {
@@ -60,13 +60,13 @@ function loadRandomMeals() {
         } else if (collected.length === 0) {
           fetchFallbackMeals();
         } else {
-          collected.forEach(function(meal) {
+          collected.forEach(function (meal) {
             renderMealCard(meal, container);
           });
           loading.classList.add("hidden");
         }
       })
-      .catch(function() {
+      .catch(function () {
         attempts++;
         if (attempts >= maxAttempts) {
           loading.classList.add("hidden");
@@ -89,8 +89,8 @@ function fetchFallbackMeals() {
 
   function fetchOne() {
     fetch("https://www.themealdb.com/api/json/v1/1/random.php")
-      .then(function(res) { return res.json(); })
-      .then(function(data) {
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
         var meal = data.meals && data.meals[0];
         if (meal) meals.push(meal);
         fetched++;
@@ -98,7 +98,7 @@ function fetchFallbackMeals() {
           fetchOne();
         } else {
           container.innerHTML = "";
-          meals.forEach(function(m) {
+          meals.forEach(function (m) {
             renderMealCard(m, container);
           });
           loading.classList.add("hidden");
@@ -108,7 +108,6 @@ function fetchFallbackMeals() {
 
   fetchOne();
 }
-
 function renderMealCard(meal, container) {
   var card = document.createElement("div");
   card.className = "meal-card";
@@ -117,7 +116,7 @@ function renderMealCard(meal, container) {
     '<img src="' + meal.strMealThumb + '" alt="' + meal.strMeal + '" />' +
     '<h3>' + meal.strMeal + '</h3>';
 
-  card.addEventListener("click", function(e) {
+  card.addEventListener("click", function (e) {
     if (e.target.classList.contains("favorite-btn")) {
       e.stopPropagation();
       toggleFavorite(meal);
@@ -132,13 +131,15 @@ function renderMealCard(meal, container) {
 function passesProfileFilter(meal) {
   var profile = JSON.parse(localStorage.getItem("userProfile")) || {};
   var ingredients = Object.keys(meal)
-    .filter(function(k) { return k.startsWith("strIngredient") && meal[k]; })
-    .map(function(k) { return meal[k].toLowerCase(); });
+    .filter(function (k) { return k.startsWith("strIngredient") && meal[k]; })
+    .map(function (k) { return meal[k].toLowerCase(); });
 
   if (profile.vegetarian && meal.strCategory !== "Vegetarian") return false;
   if (profile.vegan && meal.strCategory !== "Vegan") return false;
   if (profile.preferredArea && meal.strArea !== profile.preferredArea) return false;
-  if (profile.dislikes && profile.dislikes.some(function(d) { return ingredients.includes(d); })) return false;
+  if (profile.dislikes && profile.dislikes.some(function (d) {
+    return ingredients.includes(d);
+  })) return false;
 
   return true;
 }
@@ -150,14 +151,13 @@ function saveProfile() {
     dislikes: document.getElementById("dislikes").value
       .toLowerCase()
       .split(",")
-      .map(function(s) { return s.trim(); })
+      .map(function (s) { return s.trim(); })
       .filter(Boolean),
     preferredArea: document.getElementById("preferred-area").value
   };
   localStorage.setItem("userProfile", JSON.stringify(profile));
   loadRandomMeals();
 }
-
 function searchMeals(query) {
   var container = document.getElementById("meal-container");
   var loading = document.getElementById("loading");
@@ -165,11 +165,11 @@ function searchMeals(query) {
   loading.classList.remove("hidden");
 
   fetch("https://www.themealdb.com/api/json/v1/1/search.php?s=" + query)
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
       loading.classList.add("hidden");
       if (data.meals) {
-        data.meals.filter(passesProfileFilter).forEach(function(meal) {
+        data.meals.filter(passesProfileFilter).forEach(function (meal) {
           renderMealCard(meal, container);
         });
       } else {
@@ -187,25 +187,32 @@ function applyFilters() {
   loading.classList.remove("hidden");
 
   var url = "";
-  if (category) url = "https://www.themealdb.com/api/json/v1/1/filter.php?c=" + category;
-  else if (area) url = "https://www.themealdb.com/api/json/v1/1/filter.php?a=" + area;
-  else return loadRandomMeals();
+  if (category) {
+    url = "https://www.themealdb.com/api/json/v1/1/filter.php?c=" + category;
+  } else if (area) {
+    url = "https://www.themealdb.com/api/json/v1/1/filter.php?a=" + area;
+  } else {
+    loadRandomMeals();
+    return;
+  }
 
   fetch(url)
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
       var results = (data.meals || []).slice(0, 10);
       var loaded = 0;
-      results.forEach(function(item) {
+      results.forEach(function (item) {
         fetch("https://www.themealdb.com/api/json/v1/1/lookup.php?i=" + item.idMeal)
-          .then(function(res) { return res.json(); })
-          .then(function(full) {
+          .then(function (res) { return res.json(); })
+          .then(function (full) {
             loaded++;
             var meal = full.meals && full.meals[0];
             if (meal && passesProfileFilter(meal)) {
               renderMealCard(meal, container);
             }
-            if (loaded === results.length) loading.classList.add("hidden");
+            if (loaded === results.length) {
+              loading.classList.add("hidden");
+            }
           });
       });
     });
@@ -213,9 +220,9 @@ function applyFilters() {
 
 function toggleFavorite(meal) {
   var favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-  var exists = favs.find(function(m) { return m.idMeal === meal.idMeal; });
+  var exists = favs.find(function (m) { return m.idMeal === meal.idMeal; });
   if (exists) {
-    var updated = favs.filter(function(m) { return m.idMeal !== meal.idMeal; });
+    var updated = favs.filter(function (m) { return m.idMeal !== meal.idMeal; });
     localStorage.setItem("favorites", JSON.stringify(updated));
   } else {
     favs.push(meal);
@@ -228,17 +235,16 @@ function renderFavorites() {
   var container = document.getElementById("favorites-container");
   container.innerHTML = "";
   var favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-  favs.forEach(function(meal) {
+  favs.forEach(function (meal) {
     renderMealCard(meal, container);
   });
 }
-
-document.getElementById("dark-toggle").addEventListener("click", function() {
+document.getElementById("dark-toggle").addEventListener("click", function () {
   document.body.classList.toggle("dark");
   localStorage.setItem("darkMode", document.body.classList.contains("dark"));
 });
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   loadDarkMode();
   loadFilters();
   loadRandomMeals();
@@ -246,14 +252,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
   document.getElementById("refresh-btn").addEventListener("click", loadRandomMeals);
 
-  document.getElementById("search-btn").addEventListener("click", function() {
-    var q = document
-      document.getElementById("search-btn").addEventListener("click", function() {
+  document.getElementById("search-btn").addEventListener("click", function () {
     var q = document.getElementById("search-input").value.trim();
     if (q) searchMeals(q);
   });
 
-  document.getElementById("search-input").addEventListener("keydown", function(e) {
+  document.getElementById("search-input").addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
       var q = e.target.value.trim();
       if (q) searchMeals(q);
@@ -262,7 +266,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   document.getElementById("apply-filters").addEventListener("click", applyFilters);
 
-  document.getElementById("clear-filters").addEventListener("click", function() {
+  document.getElementById("clear-filters").addEventListener("click", function () {
     document.getElementById("category-filter").value = "";
     document.getElementById("area-filter").value = "";
     loadRandomMeals();
