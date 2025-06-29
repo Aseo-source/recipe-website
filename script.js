@@ -221,6 +221,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (q) searchMeals(q);
     }
   });
+  document.getElementById("clear-filters").addEventListener("click", () => {
+  document.getElementById("category-filter").value = "";
+  document.getElementById("area-filter").value = "";
+  loadRandomMeals(); // refresh the results
+});
+
   document.getElementById("apply-filters").addEventListener("click", applyFilters);
   document.getElementById("save-profile").addEventListener("click", saveProfile);
 });
