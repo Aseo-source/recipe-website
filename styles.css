@@ -184,5 +184,16 @@ label {
     width: 90%;
   }
 }
+#favorites-container .meal-card {
+  transform: scale(0.85);
+  margin: 0.5rem;
+  max-width: 200px;
+}
+
+#favorites-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
 
 
