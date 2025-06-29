@@ -1,4 +1,3 @@
-// Load filters
 function loadFilters() {
   fetch("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
     .then(res => res.json())
@@ -27,7 +26,6 @@ function loadFilters() {
     });
 }
 
-// Load meals with filtering and loading animation
 function loadRandomMeals() {
   const container = document.getElementById("meal-container");
   const loading = document.getElementById("loading");
@@ -42,15 +40,15 @@ function loadRandomMeals() {
     fetch("https://www.themealdb.com/api/json/v1/1/random.php")
       .then(res => res.json())
       .then(data => {
-        const meal = data.meals[0];
+        const meal = data.meals?.[0];
         attempts++;
 
-        if (passesProfileFilter(meal)) {
+        if (meal && passesProfileFilter(meal)) {
           renderMealCard(meal, container);
           count++;
         }
 
-        if (count < target && attempts < target * 3) {
+        if (count < target && attempts < target * 4) {
           tryLoad();
         } else {
           loading.classList.add("hidden");
@@ -58,14 +56,13 @@ function loadRandomMeals() {
       })
       .catch(() => {
         attempts++;
-        if (attempts >= target * 3) loading.classList.add("hidden");
+        if (attempts >= target * 4) loading.classList.add("hidden");
       });
   }
 
   tryLoad();
 }
 
-// Render meal card with redirect to recipe page
 function renderMealCard(meal, container) {
   const card = document.createElement("div");
   card.className = "meal-card";
@@ -87,7 +84,6 @@ function renderMealCard(meal, container) {
   container.appendChild(card);
 }
 
-// Check if a meal passes the user's profile filters
 function passesProfileFilter(meal) {
   const profile = JSON.parse(localStorage.getItem("userProfile")) || {};
   const ingredients = Object.keys(meal)
@@ -102,19 +98,21 @@ function passesProfileFilter(meal) {
   return true;
 }
 
-// Save user profile preferences
 function saveProfile() {
   const profile = {
     vegetarian: document.getElementById("vegetarian-pref").checked,
     vegan: document.getElementById("vegan-pref").checked,
-    dislikes: document.getElementById("dislikes").value.toLowerCase().split(",").map(s => s.trim()),
+    dislikes: document.getElementById("dislikes").value
+      .toLowerCase()
+      .split(",")
+      .map(s => s.trim())
+      .filter(s => s),
     preferredArea: document.getElementById("preferred-area").value
   };
   localStorage.setItem("userProfile", JSON.stringify(profile));
   loadRandomMeals();
 }
 
-// Search for meals by name
 function searchMeals(query) {
   const container = document.getElementById("meal-container");
   const loading = document.getElementById("loading");
@@ -135,7 +133,6 @@ function searchMeals(query) {
     });
 }
 
-// Filter meals by category or area
 function applyFilters() {
   const category = document.getElementById("category-filter").value;
   const area = document.getElementById("area-filter").value;
@@ -152,15 +149,15 @@ function applyFilters() {
   fetch(url)
     .then(res => res.json())
     .then(data => {
-      const results = data.meals.slice(0, 10);
+      const results = (data.meals || []).slice(0, 10);
       let loaded = 0;
       results.forEach(item => {
         fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${item.idMeal}`)
           .then(res => res.json())
           .then(full => {
             loaded++;
-            const meal = full.meals[0];
-            if (passesProfileFilter(meal)) {
+            const meal = full.meals?.[0];
+            if (meal && passesProfileFilter(meal)) {
               renderMealCard(meal, container);
             }
             if (loaded === results.length) loading.classList.add("hidden");
@@ -169,7 +166,6 @@ function applyFilters() {
     });
 }
 
-// Toggle a meal as favorite
 function toggleFavorite(meal) {
   const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
   const exists = favs.find(m => m.idMeal === meal.idMeal);
@@ -183,7 +179,6 @@ function toggleFavorite(meal) {
   renderFavorites();
 }
 
-// Render favorites list
 function renderFavorites() {
   const container = document.getElementById("favorites-container");
   container.innerHTML = "";
@@ -191,7 +186,6 @@ function renderFavorites() {
   favs.forEach(meal => renderMealCard(meal, container));
 }
 
-// Dark mode toggle
 document.getElementById("dark-toggle").addEventListener("click", () => {
   document.body.classList.toggle("dark");
   localStorage.setItem("darkMode", document.body.classList.contains("dark"));
@@ -203,7 +197,7 @@ function loadDarkMode() {
   }
 }
 
-// Initialization
+// 🧠 Initialization
 document.addEventListener("DOMContentLoaded", () => {
   loadDarkMode();
   loadFilters();
@@ -211,25 +205,30 @@ document.addEventListener("DOMContentLoaded", () => {
   renderFavorites();
 
   document.getElementById("refresh-btn").addEventListener("click", loadRandomMeals);
+
   document.getElementById("search-btn").addEventListener("click", () => {
     const q = document.getElementById("search-input").value.trim();
     if (q) searchMeals(q);
   });
+
   document.getElementById("search-input").addEventListener("keydown", e => {
     if (e.key === "Enter") {
       const q = e.target.value.trim();
       if (q) searchMeals(q);
     }
   });
-  document.getElementById("clear-filters").addEventListener("click", () => {
-  document.getElementById("category-filter").value = "";
-  document.getElementById("area-filter").value = "";
-  loadRandomMeals(); // refresh the results
-});
 
   document.getElementById("apply-filters").addEventListener("click", applyFilters);
+
+  document.getElementById("clear-filters").addEventListener("click", () => {
+    document.getElementById("category-filter").value = "";
+    document.getElementById("area-filter").value = "";
+    loadRandomMeals();
+  });
+
   document.getElementById("save-profile").addEventListener("click", saveProfile);
 });
+
 
 
 
