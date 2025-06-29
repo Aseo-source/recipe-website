@@ -21,7 +21,7 @@ body.dark {
 body {
   background-color: var(--bg);
   color: var(--text);
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Poppins', sans-serif;
   line-height: 1.6;
   transition: background 0.3s, color 0.3s;
 }
@@ -46,6 +46,7 @@ header {
 h1 {
   font-size: 2.2rem;
   margin: 0;
+  font-weight: 600;
 }
 
 button {
@@ -57,6 +58,7 @@ button {
   margin: 0.5rem;
   background-color: var(--accent);
   color: white;
+  font-weight: 500;
 }
 
 button:hover {
@@ -80,6 +82,7 @@ select {
   border: 1px solid #ccc;
   background-color: var(--card);
   color: var(--text);
+  font-family: inherit;
 }
 
 input::placeholder {
@@ -123,6 +126,7 @@ label {
   text-align: center;
   margin-top: 0.8rem;
   font-size: 1.1rem;
+  font-weight: 500;
 }
 
 .favorite-btn {
@@ -133,36 +137,6 @@ label {
   font-size: 1.3rem;
   color: red;
   border: none;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 10;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background: var(--card);
-  padding: 2rem;
-  border-radius: 10px;
-  max-width: 600px;
-  width: 90%;
-  color: var(--text);
-  position: relative;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-
-.modal .close {
-  position: absolute;
-  top: 10px; right: 15px;
-  font-size: 1.5rem;
-  cursor: pointer;
 }
 
 #loading {
@@ -186,4 +160,5 @@ label {
     width: 90%;
   }
 }
+
 
