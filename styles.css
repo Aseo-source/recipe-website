@@ -196,9 +196,10 @@ label {
   gap: 1rem;
 }
 .site-logo {
-  height: 50px;
-  margin-right: 1rem;
-  vertical-align: middle;
+ .site-logo {
+  height: 80px;
+  width: auto;
+}
 }
 header {
   display: flex;
