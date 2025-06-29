@@ -1,4 +1,4 @@
-// Load filter options
+// Load filters
 function loadFilters() {
   fetch("https://www.themealdb.com/api/json/v1/1/list.php?c=list")
     .then(res => res.json())
@@ -27,7 +27,7 @@ function loadFilters() {
     });
 }
 
-// Load meals
+// Load meals with filtering and loading animation
 function loadRandomMeals() {
   const container = document.getElementById("meal-container");
   const loading = document.getElementById("loading");
@@ -65,7 +65,7 @@ function loadRandomMeals() {
   tryLoad();
 }
 
-// Render a meal card
+// Render meal card with redirect to recipe page
 function renderMealCard(meal, container) {
   const card = document.createElement("div");
   card.className = "meal-card";
@@ -80,14 +80,14 @@ function renderMealCard(meal, container) {
       e.stopPropagation();
       toggleFavorite(meal);
     } else {
-      showModal(meal);
+      window.location.href = `recipe.html?id=${meal.idMeal}`;
     }
   });
 
   container.appendChild(card);
 }
 
-// Profile preferences filter
+// Check if a meal passes the user's profile filters
 function passesProfileFilter(meal) {
   const profile = JSON.parse(localStorage.getItem("userProfile")) || {};
   const ingredients = Object.keys(meal)
@@ -102,7 +102,7 @@ function passesProfileFilter(meal) {
   return true;
 }
 
-// Save user profile
+// Save user profile preferences
 function saveProfile() {
   const profile = {
     vegetarian: document.getElementById("vegetarian-pref").checked,
@@ -114,7 +114,7 @@ function saveProfile() {
   loadRandomMeals();
 }
 
-// Search meals
+// Search for meals by name
 function searchMeals(query) {
   const container = document.getElementById("meal-container");
   const loading = document.getElementById("loading");
@@ -135,7 +135,7 @@ function searchMeals(query) {
     });
 }
 
-// Apply category/area filters
+// Filter meals by category or area
 function applyFilters() {
   const category = document.getElementById("category-filter").value;
   const area = document.getElementById("area-filter").value;
@@ -169,37 +169,7 @@ function applyFilters() {
     });
 }
 
-// Show recipe modal
-function showModal(meal) {
-  const modal = document.getElementById("modal");
-  const body = document.getElementById("modal-body");
-
-  const ingredients = Object.keys(meal)
-    .filter(k => k.startsWith("strIngredient") && meal[k])
-    .map((_, i) => {
-      const ing = meal["strIngredient" + (i + 1)];
-      const amt = meal["strMeasure" + (i + 1)];
-      return ing ? `<li>${ing} - ${amt || ""}</li>` : "";
-    }).join("");
-
-  body.innerHTML = `
-    <h2>${meal.strMeal}</h2>
-    <img src="${meal.strMealThumb}" style="width:100%; border-radius:10px; margin-top:1rem" />
-    <h4 style="margin-top:1rem;">Ingredients:</h4>
-    <ul>${ingredients}</ul>
-    <h4>Instructions:</h4>
-    <p>${meal.strInstructions}</p>
-  `;
-
-  modal.classList.remove("hidden");
-}
-
-// Close modal
-document.querySelector(".close").addEventListener("click", () => {
-  document.getElementById("modal").classList.add("hidden");
-});
-
-// Toggle favorite
+// Toggle a meal as favorite
 function toggleFavorite(meal) {
   const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
   const exists = favs.find(m => m.idMeal === meal.idMeal);
@@ -213,7 +183,7 @@ function toggleFavorite(meal) {
   renderFavorites();
 }
 
-// Render favorites
+// Render favorites list
 function renderFavorites() {
   const container = document.getElementById("favorites-container");
   container.innerHTML = "";
@@ -254,5 +224,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("apply-filters").addEventListener("click", applyFilters);
   document.getElementById("save-profile").addEventListener("click", saveProfile);
 });
+
 
 
